@@ -35,7 +35,8 @@ export class DefaultReducer implements RootReducer {
             return actionReducer.type === action.type;
         };
 
-        if (action.type === '@@redux/INIT') {
+        const REDUX_INITIAL_ACTION_TYPE_MATCHER = /@@.*init/ig;
+        if ((REDUX_INITIAL_ACTION_TYPE_MATCHER).test(action.type)) {
             return actionReducers.reduce((nextState, reducer) => {
                 if (!reducer.owner.getInitialState) {
                     return state;

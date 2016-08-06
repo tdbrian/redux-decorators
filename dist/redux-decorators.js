@@ -105,7 +105,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var matchingActionTypeOnly = function (actionReducer) {
 	            return actionReducer.type === action.type;
 	        };
-	        if (action.type === '@@redux/INIT') {
+	        var REDUX_INITIAL_ACTION_TYPE_MATCHER = /@@.*init/ig;
+	        if ((REDUX_INITIAL_ACTION_TYPE_MATCHER).test(action.type)) {
 	            return actionReducers.reduce(function (nextState, reducer) {
 	                if (!reducer.owner.getInitialState) {
 	                    return state;
