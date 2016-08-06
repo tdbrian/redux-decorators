@@ -3,13 +3,16 @@ import {getReducer} from './../reducer.decorator';
 
 let appStore;
 
+declare let window: Window;
+const ENVIRONMENT: Window = typeof window !== 'undefined' ? window || this : null;
+
 export function getStore(): Promise<Store>  {
     if (!appStore) {
         appStore = new Promise((resolve) => {
             var interval = setInterval(() => {
                 if (getReducer()) {
                     clearInterval(interval);
-                    resolve(createStore(getReducer()));
+                    resolve(createStore(getReducer(), ENVIRONMENT && ENVIRONMENT.devToolsExtension && ENVIRONMENT.devToolsExtension()));
                 }
             });
         });
