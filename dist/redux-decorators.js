@@ -55,6 +55,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	/// <reference path="../typings/tsd.d.ts" />
+	"use strict";
 	var reducer_decorator_1 = __webpack_require__(1);
 	exports.Reducer = reducer_decorator_1.Reducer;
 	var state_decorator_1 = __webpack_require__(2);
@@ -75,6 +76,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 1 */
 /***/ function(module, exports) {
 
+	"use strict";
 	var rootReducer;
 	var initialState = {};
 	//------------------------------------------------------------------------------
@@ -138,7 +140,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return filteredActionReducers.reduce(createNextState, state);
 	    };
 	    return DefaultReducer;
-	})();
+	}());
 	exports.DefaultReducer = DefaultReducer;
 	var actionReducers = [];
 	function addActionReducer(type, owner, methodName) {
@@ -186,6 +188,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 2 */
 /***/ function(module, exports) {
 
+	"use strict";
 	function State() {
 	    return function (target) {
 	        var props = [];
@@ -207,6 +210,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
+	"use strict";
 	var general_binding_1 = __webpack_require__(4);
 	exports.getStore = general_binding_1.getStore;
 	var angular2_binding_1 = __webpack_require__(6);
@@ -226,16 +230,18 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
+	"use strict";
 	var redux_1 = __webpack_require__(5);
 	var reducer_decorator_1 = __webpack_require__(1);
 	var appStore;
+	var ENVIRONMENT = typeof window !== 'undefined' ? window || this : null;
 	function getStore() {
 	    if (!appStore) {
 	        appStore = new Promise(function (resolve) {
 	            var interval = setInterval(function () {
 	                if (reducer_decorator_1.getReducer()) {
 	                    clearInterval(interval);
-	                    resolve(redux_1.createStore(reducer_decorator_1.getReducer()));
+	                    resolve(redux_1.createStore(reducer_decorator_1.getReducer(), ENVIRONMENT && ENVIRONMENT.devToolsExtension && ENVIRONMENT.devToolsExtension()));
 	                }
 	            });
 	        });
@@ -308,6 +314,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 6 */
 /***/ function(module, exports) {
 
+	"use strict";
 	function angular2Binding(target) {
 	    var existingNgOnInit = target.prototype.ngOnInit;
 	    var existingNgOnDestroy = target.prototype.ngOnDestroy;
@@ -328,6 +335,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
+	"use strict";
 	var reducer_decorator_1 = __webpack_require__(1);
 	function InitialState(initialState) {
 	    reducer_decorator_1.setInitialState(initialState);
@@ -340,6 +348,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
+	"use strict";
 	var slice_state_helper_1 = __webpack_require__(9);
 	var addGetSliceMethod = function (target) {
 	    if (target.getSlice) {
@@ -387,6 +396,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 9 */
 /***/ function(module, exports) {
 
+	"use strict";
 	var addGetInitialStateMethod = function (target) {
 	    if (target.getInitialState) {
 	        return;

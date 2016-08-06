@@ -3,8 +3,8 @@ import {getReducer} from './../reducer.decorator';
 
 let appStore;
 
-declare let window: Window;
-const ENVIRONMENT: Window = typeof window !== 'undefined' ? window || this : null;
+declare let window;
+const ENVIRONMENT = typeof window !== 'undefined' ? window || this : null;
 
 export function getStore(): Promise<Store>  {
     if (!appStore) {
