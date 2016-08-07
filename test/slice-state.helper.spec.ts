@@ -1,11 +1,14 @@
+declare let expect;
+
 import 'es6-shim';
-import { expect } from './must';
+import * as sinon from 'sinon';
+import expect = require('must');
 import { setSliceState } from '../src/slice-state.helper';
 
 describe('slice state helper', function() {
 
     it('must add initial state information to a class', function() {
-        class Component { }
+        class Component { initialState }
         setSliceState({count: 1}, Component);
         expect(Component.prototype.initialState.default).to.eql({ count: 1 });
     });
@@ -13,6 +16,7 @@ describe('slice state helper', function() {
     it('must add initial state information to a method', function() {
         class Component {
             method() { }
+            initialState
         }
         setSliceState({ count: 1 }, Component, 'method');
         const instance = new Component();
@@ -23,6 +27,7 @@ describe('slice state helper', function() {
         class Component {
             method1() { }
             method2() { }
+            initialState
         }
         setSliceState({ count: 0 }, Component);
         setSliceState({ count1: 1 }, Component, 'method1');

@@ -1,6 +1,8 @@
+declare var expect;
+
 import 'es6-shim';
-import {sinon} from './../sinon';
-import {expect} from './../must';
+import * as sinon from 'sinon';
+import expect = require('must');
 import {generalBinding} from '../../src/store.decorator/general.binding';
 
 describe('generalBinding', function() {
@@ -21,7 +23,7 @@ describe('generalBinding', function() {
 
         it('must add a dispatch method to the target', function() {
             let target = function() {};
-            let output = generalBinding(target, {});
+            let output = generalBinding(target, []);
             expect(output.prototype.dispatch).a.function();
         });
 
@@ -31,7 +33,7 @@ describe('generalBinding', function() {
 
         it('must add a storeUpdateHandler method to the target', function() {
             let target = function() {};
-            let output = generalBinding(target, {});
+            let output = generalBinding(target, []);
             expect(output.prototype.storeUpdateHandler).to.be.function();
         });
 
@@ -54,7 +56,7 @@ describe('generalBinding', function() {
 
         it('must add a storeInit method to the target', function() {
             let target = function() {};
-            let output = generalBinding(target, {});
+            let output = generalBinding(target, []);
             expect(output.prototype.storeInit).to.be.function();
         });
 
@@ -62,7 +64,7 @@ describe('generalBinding', function() {
             let target = function() {};
             let output = generalBinding(target);
             let instance = new output();
-            let store = {subscribe(){}};
+            let store: any = {subscribe(){}};
             sinon.spy(store, 'subscribe');
             // Don't know why spy doesn't work...
             // sinon.spy(instance, 'storeUpdateHandler');
@@ -117,7 +119,7 @@ describe('generalBinding', function() {
 
         it('must add a storeDestroy method to the target', function() {
             let target = function() {};
-            let output = generalBinding(target, {});
+            let output = generalBinding(target, []);
             expect(output.prototype.storeDestroy).to.be.function();
         });
 

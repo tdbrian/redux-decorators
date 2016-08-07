@@ -54,7 +54,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/// <reference path="../typings/tsd.d.ts" />
+	/// <reference path="../typings/index.d.ts" />
 	"use strict";
 	var reducer_decorator_1 = __webpack_require__(1);
 	exports.Reducer = reducer_decorator_1.Reducer;

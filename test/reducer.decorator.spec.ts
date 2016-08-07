@@ -1,6 +1,8 @@
+declare let expect;
+
 import 'es6-shim';
-import {sinon} from './sinon';
-import {expect} from './must';
+import * as sinon from 'sinon';
+import expect = require('must');
 import {Reducer, DefaultReducer, setReducer, addActionReducer, removeActionReducers, getActionReducers} from '../src/reducer.decorator';
 import {getStore} from '../src/store.decorator';
 
@@ -31,7 +33,7 @@ describe('@Reducer', function() {
             @Reducer()
             class RootReducer { reducer(state, action) {} }
             let spy = sinon.spy(RootReducer.prototype, 'reducer');
-            getStore().then(function(store) {
+            getStore().then(function(store: any) {
                 store.dispatch('action', 1, 2, 3);
                 expect(spy.calledWithExactly('action', [1, 2, 3]))
             });

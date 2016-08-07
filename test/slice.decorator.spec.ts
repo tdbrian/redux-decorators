@@ -1,12 +1,14 @@
+declare let expect;
+
 import 'es6-shim';
-import {expect} from './must';
+import expect = require('must');
 import {Slice} from '../src/slice.decorator';
 
 describe('@Slice', function() {
 
     it('must add slice information to a class', function() {
         @Slice('class-slice')
-        class Component {}
+        class Component {stateSliceAffected}
         expect(Component.prototype.stateSliceAffected.default).to.equal('class-slice');
     });
 
@@ -14,6 +16,7 @@ describe('@Slice', function() {
         class Component {
             @Slice('method-slice')
             method() {}
+            stateSliceAffected
         }
         const instance = new Component();
         expect(instance.stateSliceAffected.method).to.equal('method-slice');
@@ -25,6 +28,7 @@ describe('@Slice', function() {
             @Slice('method-slice')
             method1() {}
             method2() {}
+            stateSliceAffected
         }
         const instance = new Component();
         expect(Component.prototype.stateSliceAffected.default).to.equal('class-slice');
@@ -35,7 +39,10 @@ describe('@Slice', function() {
     it('must allow an initial value to be passed as the 2nd argument (class)', () => {
 
         @Slice('default', 0)
-        class Component {}
+        class Component {
+            stateSliceAffected
+            getInitialState
+        }
         expect(Component.prototype.stateSliceAffected.default).to.equal('default');
         expect(Component.prototype.getInitialState('default')).to.equal(0);
 
@@ -46,6 +53,8 @@ describe('@Slice', function() {
         class Component {
             @Slice('default', 0)
             method() {}
+            getInitialState
+            stateSliceAffected
         }
         expect(Component.prototype.stateSliceAffected['method']).to.equal('default');
         expect(Component.prototype.getInitialState('method')).to.equal(0);

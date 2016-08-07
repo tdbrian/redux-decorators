@@ -3,7 +3,10 @@
   "version": "0.4.3",
   "scripts": {
     "build": "webpack",
-    "test": "webpack --env=test > /dev/null && mocha dist/redux-decorators.spec.js"
+    "test": "webpack --env=test > /dev/null && mocha dist/redux-decorators.spec.js",
+    "test-windows": "webpack --env=test & mocha dist/redux-decorators.spec.js",
+    "typings": "typings",
+    "postinstall": "typings install"
   },
   "license": "MIT",
   "dependencies": {
@@ -12,10 +15,11 @@
   },
   "devDependencies": {
     "mocha": "^2.4.5",
-    "must": "^0.13.1",
+    "must": "^0.13.2",
     "sinon": "^1.17.3",
-    "typescript": "^1.7.5",
     "ts-loader": "^0.8.0",
+    "typescript": "^1.7.5",
+    "typings": "^1.3.2",
     "webpack": "^1.12.12",
     "yargs": "^3.32.0"
   },
@@ -28,6 +32,7 @@
   "keywords": [
     "redux",
     "typescript",
+    "typings",
     "angular2"
   ],
   "author": "Karl Purkhardt",
