@@ -1,23 +1,27 @@
 import {createStore, Store} from 'redux';
 import {getReducer} from './../reducer.decorator';
 
-let appStore;
+let appStore: Store<any>;
 
 declare let window;
 const ENVIRONMENT = typeof window !== 'undefined' ? window || this : null;
 
 export function getStore(): Promise<Store<any>>  {
-    if (!appStore) {
-        appStore = new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
+        if(appStore) {
+            resolve(appStore);
+        } else {
             var interval = setInterval(() => {
                 if (getReducer()) {
                     clearInterval(interval);
-                    resolve(createStore(getReducer(), ENVIRONMENT && ENVIRONMENT.devToolsExtension && ENVIRONMENT.devToolsExtension()));
+                    appStore = createStore(getReducer(), ENVIRONMENT && ENVIRONMENT.devToolsExtension && ENVIRONMENT.devToolsExtension());
+                    resolve(appStore);
+                } else {
+                    reject("There is no reducer setup to create a new store with");
                 }
             });
-        });
-    }
-    return appStore;
+        }
+    });
 }
 
 export function updateStateProperties(target: any, state: any, properties: string = 'stateProperties'): void {
@@ -36,7 +40,9 @@ export function generalBinding(target: any, stateProperties?: string[]): any {
 
     // Add a dispatch method to the target
     target.prototype.dispatch = function(action, ...data) {
-        this.appStore.dispatch({type: action, data: data});
+        this.getStore
+            .then(store => store.dispatch({type: action, data: data}))
+            .catch(err => console.error("Unable to dispatch messsage without a Redux store. Please ensure there is a root reducer."));
     };
 
     // Add a generic store update handler
@@ -50,7 +56,7 @@ export function generalBinding(target: any, stateProperties?: string[]): any {
             this.unsubscribe = this.appStore.subscribe(this.storeUpdateHandler.bind(this));
             // Apply the default state to all listeners
             this.storeUpdateHandler();
-        });
+        }).catch(() => console.error("Unable to initialize store without a root reducer."));
     }
 
     // Add a generic storeDestroy method
@@ -59,11 +65,9 @@ export function generalBinding(target: any, stateProperties?: string[]): any {
     };
 
     // Add a get store method
-    target.prototype.getStore = function() {
-        if (this.appStore) {
-            return this.appStore.then ? this.appStore : Promise.resolve(this.appStore);
-        }
-        return getStore().then(store => this.appStore = store);
+    target.prototype.getStore = function(): Promise<Store<any>> {
+        return getStore()
+            .catch(err => console.error("Unable to dispatch messsage without a Redux store. Please ensure there is a root reducer."));;
     };
 
     // Add a set store method for testing purposes

@@ -66,12 +66,11 @@ describe('generalBinding', function() {
             let instance = new output();
             let store: any = {subscribe(){}};
             sinon.spy(store, 'subscribe');
-            // Don't know why spy doesn't work...
-            // sinon.spy(instance, 'storeUpdateHandler');
             sinon.stub(instance, 'storeUpdateHandler');
             instance.setStore(store);
             instance.storeInit().then(() => {
                 expect(store.subscribe.calledOnce).to.be.true();
+                expect(instance.storeUpdateHandler.calledOnce).to.be.true();
                 done();
             })
             .catch(done);
@@ -83,17 +82,15 @@ describe('generalBinding', function() {
             let instance = new output();
             let store = {subscribe(){}};
             sinon.stub(store, 'subscribe').returns(function() {});
-            // Don't know why spy doesn't work...
-            // sinon.spy(instance, 'storeUpdateHandler');
             sinon.stub(instance, 'storeUpdateHandler');
             instance.setStore(store);
             instance.storeInit().then(() => {
                 expect(instance.unsubscribe).to.be.function();
+                expect(instance.storeUpdateHandler.calledOnce).to.be.true();
                 done();
             })
             .catch(done);
         });
-
 
         it('must call the updateStoreHandler when called', function(done) {
             let target = function() {};
@@ -101,8 +98,6 @@ describe('generalBinding', function() {
             let instance = new output();
             let store = {subscribe(){}};
             sinon.spy(store, 'subscribe');
-            // Don't know why spy doesn't work...
-            // sinon.spy(instance, 'storeUpdateHandler');
             sinon.stub(instance, 'storeUpdateHandler');
             instance.setStore(store);
             instance.storeInit().then(() => {
@@ -111,7 +106,6 @@ describe('generalBinding', function() {
             })
             .catch(done);
         });
-
 
     });
 
